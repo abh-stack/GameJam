@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2818881686447453948}
   - component: {fileID: 1209355848553937336}
   m_Layer: 3
-  m_Name: Square (8)
+  m_Name: falling_platform
   m_TagString: ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
