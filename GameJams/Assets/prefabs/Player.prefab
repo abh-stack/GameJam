@@ -47,8 +47,9 @@ GameObject:
   - component: {fileID: 2248904992840380796}
   - component: {fileID: 9063142859126969064}
   - component: {fileID: 6368024243655020457}
+  - component: {fileID: 7494443431441225106}
   m_Layer: 6
-  m_Name: Capsule
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,7 +144,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1.5
+  m_GravityScale: 2.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -181,10 +182,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87cbac3afc0d56f4f8f8018f1a441d04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterController2D
-  jumpForce: 400
+  jumpForce: 550
   movementSmoothing: 0.05
   airControl: 1
-  moveSpeed: 10
+  moveSpeed: 7
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
@@ -272,4 +273,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupAndThrow
   pickupRange: 1.5
-  throwForce: 2
+  throwForce: 7
+  currentBox: {fileID: 0}
+--- !u!114 &7494443431441225106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5993480331603855375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efe33d1eda595d844af76b829962584f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRespawn
+  respawnPosition: {x: 0, y: 0, z: 0}
+  respawnDelay: 1
