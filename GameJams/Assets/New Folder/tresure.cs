@@ -6,6 +6,19 @@ public class TreasureDestroy : MonoBehaviour
     private bool hasBeenThrown = false;
     private Rigidbody2D rb;
 
+
+    private void Awake()
+    {
+        // Make sure treasure has the right components for pickup
+        if (GetComponent<Rigidbody2D>() == null)
+            gameObject.AddComponent<Rigidbody2D>();
+
+        if (GetComponent<Collider2D>() == null)
+            gameObject.AddComponent<BoxCollider2D>();
+
+        // Set tag
+        gameObject.tag = "Treasure";
+    }
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();

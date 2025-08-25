@@ -5,7 +5,7 @@ public class PickupAndThrow : MonoBehaviour
     [SerializeField] private float pickupRange = 1.5f;
     [SerializeField] private float throwForce = 15f;
 
-    private GameObject currentBox;
+   public GameObject currentBox;
 
     private void Update()
     {
