@@ -2,10 +2,28 @@ using UnityEngine;
 
 public class PickupAndThrow : MonoBehaviour
 {
+    [Header("Pickup Settings")]
     [SerializeField] private float pickupRange = 1.5f;
     [SerializeField] private float throwForce = 15f;
 
-   public GameObject currentBox;
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip pickupClip;
+
+    public GameObject currentBox;
+    private AudioSource audioSource;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        audioSource.loop = false;
+        audioSource.playOnAwake = false;
+    }
 
     private void Update()
     {
@@ -14,9 +32,7 @@ public class PickupAndThrow : MonoBehaviour
             if (currentBox == null) TryPickup();
             else Drop();
         }
-
         if (Input.GetKeyDown(KeyCode.E) && currentBox != null) Throw();
-
         if (currentBox != null)
         {
             float xOffset = transform.localScale.x > 0 ? 0.8f : -0.8f;
@@ -34,6 +50,7 @@ public class PickupAndThrow : MonoBehaviour
                 currentBox = item.gameObject;
                 item.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
                 item.GetComponent<Collider2D>().enabled = false;
+                PlayPickupSound();
                 break;
             }
         }
@@ -55,6 +72,14 @@ public class PickupAndThrow : MonoBehaviour
         rb.AddForce(direction * throwForce + Vector2.up * 5f, ForceMode2D.Impulse);
         currentBox.GetComponent<Collider2D>().enabled = true;
         currentBox = null;
+    }
+
+    private void PlayPickupSound()
+    {
+        if (pickupClip != null)
+        {
+            audioSource.PlayOneShot(pickupClip);
+        }
     }
 
     // Public property to check if holding treasure specifically

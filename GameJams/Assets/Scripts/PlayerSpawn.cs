@@ -3,70 +3,84 @@ using UnityEngine.SceneManagement;
 
 public class PlayerRespawn : MonoBehaviour
 {
-    [SerializeField] private Vector3 respawnPosition;
     [SerializeField] private float respawnDelay = 1f;
-    [SerializeField] private GameObject deathEffectPrefab; // Assign your particle prefab in Inspector
+    [SerializeField] private GameObject fallingSpritePrefab;
+    [SerializeField] private AudioSource deathSound;
 
     private Rigidbody2D rb;
     private CharacterController2D controller;
     private SpriteRenderer spriteRenderer;
+    private AudioSource audioSource;
+    private bool isDead = false;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         controller = GetComponent<CharacterController2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        respawnPosition = transform.position;
-
-        RespawnPoint startingPoint = Object.FindFirstObjectByType<RespawnPoint>();
-        if (startingPoint != null)
-        {
-            respawnPosition = startingPoint.transform.position;
-            transform.position = respawnPosition;
-        }
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Die()
     {
-        rb.linearVelocity = Vector2.zero;
+        // Prevent multiple death calls
+        if (isDead) return;
+        isDead = true;
 
+        // Stop player movement
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
+
+        // Disable player controller
         if (controller != null)
             controller.enabled = false;
 
-        // Spawn particle effect like Flappy Bird
-        if (deathEffectPrefab != null)
-            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        // Create falling sprite effect
+        if (fallingSpritePrefab != null && spriteRenderer != null)
+        {
+            GameObject fallingCopy = Instantiate(fallingSpritePrefab, transform.position, Quaternion.identity);
 
-        // Hide player sprite before respawn
+            SpriteRenderer copyRenderer = fallingCopy.GetComponent<SpriteRenderer>();
+            if (copyRenderer != null)
+            {
+                copyRenderer.sprite = spriteRenderer.sprite;
+                copyRenderer.flipX = spriteRenderer.flipX;
+            }
+
+            Rigidbody2D rb2d = fallingCopy.GetComponent<Rigidbody2D>();
+            if (rb2d != null)
+                rb2d.angularVelocity = Random.Range(-200f, 200f);
+
+            Destroy(fallingCopy, 3f);
+        }
+
+        // Hide the player sprite
         if (spriteRenderer != null)
             spriteRenderer.enabled = false;
 
+        // Play death sound
+        if (deathSound != null)
+        {
+            if (audioSource != null)
+                audioSource.PlayOneShot(deathSound.clip);
+            else
+                AudioSource.PlayClipAtPoint(deathSound.clip, transform.position);
+        }
+
         Debug.Log("Player died!");
 
-        Invoke(nameof(Respawn), respawnDelay);
+        // Schedule scene reload (instead of manual respawn)
+        Invoke(nameof(ReloadScene), respawnDelay);
     }
 
-    private void Respawn()
+    private void ReloadScene()
     {
-        transform.position = respawnPosition;
-
-        // Re-enable player
-        if (controller != null)
-            controller.enabled = true;
-
-        if (spriteRenderer != null)
-            spriteRenderer.enabled = true;
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
     }
-
     public void SetRespawnPoint(Vector3 newRespawnPoint)
     {
-        respawnPosition = newRespawnPoint;
-        Debug.Log($"Respawn point set to: {respawnPosition}");
-    }
-
-    public void ForceRespawn()
-    {
-        Die();
+        // Only useful if using checkpoint respawn
+        Debug.Log($"Respawn point set to: {newRespawnPoint}");
     }
 }

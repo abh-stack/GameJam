@@ -8,12 +8,23 @@ public class LevelDoor : MonoBehaviour
     [SerializeField] private Color lockedColor = Color.red;
     [SerializeField] private Color unlockedColor = Color.green;
 
+    [Header("Animation & Audio")]
+    [SerializeField] private Animator animator;       
+    [SerializeField] private string unlockTrigger = "Unlock"; 
+    [SerializeField] private AudioSource audioSource; 
+    [SerializeField] private AudioClip unlockSound;   
+
     private SpriteRenderer spriteRenderer;
     private bool isUnlocked = false;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // If not assigned in Inspector, try to find automatically
+        if (animator == null) animator = GetComponent<Animator>();
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+
         UpdateDoorAppearance();
     }
 
@@ -51,11 +62,24 @@ public class LevelDoor : MonoBehaviour
 
         isUnlocked = true;
         UpdateDoorAppearance();
+
+        // Trigger animation if animator is assigned
+        if (animator != null && !string.IsNullOrEmpty(unlockTrigger))
+        {
+            animator.SetTrigger(unlockTrigger);
+        }
+
+        // Play unlock sound
+        if (audioSource != null && unlockSound != null)
+        {
+            audioSource.PlayOneShot(unlockSound);
+        }
+
         Debug.Log("Door unlocked! Loading next level...");
 
         if (!string.IsNullOrEmpty(nextLevelName))
         {
-            Invoke(nameof(LoadNextLevel), 1f);
+            Invoke(nameof(LoadNextLevel), 1.5f); // delay slightly longer for animation/sound
         }
         else
         {
