@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
         // Jump input - using GetKeyDown for jump buffering
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             // Only jump if not holding a box
             PickupAndThrow pickupScript = GetComponent<PickupAndThrow>();

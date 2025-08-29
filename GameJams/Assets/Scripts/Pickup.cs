@@ -9,13 +9,13 @@ public class PickupAndThrow : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             if (currentBox == null) TryPickup();
             else Drop();
         }
 
-        if (Input.GetKeyDown(KeyCode.C) && currentBox != null) Throw();
+        if (Input.GetKeyDown(KeyCode.E) && currentBox != null) Throw();
 
         if (currentBox != null)
         {
