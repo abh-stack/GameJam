@@ -1,30 +1,24 @@
 using UnityEngine;
-
 public class PickupAndThrow : MonoBehaviour
 {
     [Header("Pickup Settings")]
     [SerializeField] private float pickupRange = 1.5f;
     [SerializeField] private float throwForce = 15f;
-
     [Header("Audio Settings")]
     [SerializeField] private AudioClip pickupClip;
-
+    private float audioVolume = 0.08f;
     public GameObject currentBox;
     private AudioSource audioSource;
-
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
-
         audioSource.loop = false;
         audioSource.playOnAwake = false;
     }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -39,7 +33,6 @@ public class PickupAndThrow : MonoBehaviour
             currentBox.transform.position = transform.position + Vector3.up * 0.5f + Vector3.right * xOffset;
         }
     }
-
     private void TryPickup()
     {
         Collider2D[] items = Physics2D.OverlapCircleAll(transform.position, pickupRange);
@@ -55,7 +48,6 @@ public class PickupAndThrow : MonoBehaviour
             }
         }
     }
-
     private void Drop()
     {
         var rb = currentBox.GetComponent<Rigidbody2D>();
@@ -63,7 +55,6 @@ public class PickupAndThrow : MonoBehaviour
         currentBox.GetComponent<Collider2D>().enabled = true;
         currentBox = null;
     }
-
     private void Throw()
     {
         Vector2 direction = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
@@ -73,15 +64,13 @@ public class PickupAndThrow : MonoBehaviour
         currentBox.GetComponent<Collider2D>().enabled = true;
         currentBox = null;
     }
-
     private void PlayPickupSound()
     {
         if (pickupClip != null)
         {
-            audioSource.PlayOneShot(pickupClip);
+            audioSource.PlayOneShot(pickupClip, audioVolume);
         }
     }
-
-    // Public property to check if holding treasure specifically
+    
     public bool IsHoldingBox => currentBox != null && currentBox.CompareTag("Treasure");
 }

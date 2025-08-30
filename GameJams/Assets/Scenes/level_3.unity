@@ -799,7 +799,7 @@ Transform:
   m_GameObject: {fileID: 249464757}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000012412375, y: -0.000000028011302, z: 3.4768678e-16, w: 1}
-  m_LocalPosition: {x: -25.417292, y: 7.2024, z: -10}
+  m_LocalPosition: {x: -25.436863, y: 7.2024, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -985,7 +985,7 @@ PrefabInstance:
     - target: {fileID: 6368024243655020457, guid: 81f5093deb4ff8747ac5000ccd40dcc3, type: 3}
       propertyPath: pickupClip
       value: 
-      objectReference: {fileID: 8300000, guid: d0005fb4c051e7c4d80af43350eb833f, type: 3}
+      objectReference: {fileID: 8300000, guid: 351bffbe2828fd54f999bc64e1c462bc, type: 3}
     - target: {fileID: 6515844050631696214, guid: 81f5093deb4ff8747ac5000ccd40dcc3, type: 3}
       propertyPath: m_SortingLayer
       value: 4
@@ -52882,7 +52882,7 @@ PrefabInstance:
       objectReference: {fileID: 1800300533}
     - target: {fileID: 4145503396450508184, guid: e9731501fc2814b4f9933669d783b2cc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.417292
+      value: -25.436863
       objectReference: {fileID: 0}
     - target: {fileID: 4145503396450508184, guid: e9731501fc2814b4f9933669d783b2cc, type: 3}
       propertyPath: m_LocalPosition.y

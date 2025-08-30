@@ -2236,7 +2236,7 @@ PrefabInstance:
       objectReference: {fileID: 452017716}
     - target: {fileID: 4145503396450508184, guid: e9731501fc2814b4f9933669d783b2cc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.003544
+      value: -6.9056787
       objectReference: {fileID: 0}
     - target: {fileID: 4145503396450508184, guid: e9731501fc2814b4f9933669d783b2cc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3179,7 +3179,7 @@ Transform:
   m_GameObject: {fileID: 1026568326}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.003544, y: -0.19599998, z: -10}
+  m_LocalPosition: {x: -6.9056787, y: -0.19599998, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30209,7 +30209,7 @@ PrefabInstance:
     - target: {fileID: 6368024243655020457, guid: 81f5093deb4ff8747ac5000ccd40dcc3, type: 3}
       propertyPath: pickupClip
       value: 
-      objectReference: {fileID: 8300000, guid: d0005fb4c051e7c4d80af43350eb833f, type: 3}
+      objectReference: {fileID: 8300000, guid: 351bffbe2828fd54f999bc64e1c462bc, type: 3}
     - target: {fileID: 6368024243655020457, guid: 81f5093deb4ff8747ac5000ccd40dcc3, type: 3}
       propertyPath: throwForce
       value: 7
