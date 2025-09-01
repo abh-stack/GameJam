@@ -3,42 +3,25 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections;
 
-public class LevelDoor : MonoBehaviour
+public class Enddoor: MonoBehaviour
 {
     [Header("Door Settings")]
     [SerializeField] private string nextLevelName = "Level2";
-    [SerializeField] private Color lockedColor = Color.red;
-    [SerializeField] private Color unlockedColor = Color.green;
-
-    [Header("Animation & Audio")]
-    [SerializeField] private Animator animator;
-    [SerializeField] private string unlockTrigger = "Unlock";
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip unlockSound;
 
     [Header("UI Messages")]
     [SerializeField] private TextMeshProUGUI messageText; // Assign in Inspector
     [SerializeField] private float messageDuration = 3f;
 
-    private SpriteRenderer spriteRenderer;
     private bool isUnlocked = false;
     private Coroutine messageCoroutine;
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
-        // If not assigned in Inspector, try to find automatically
-        if (animator == null) animator = GetComponent<Animator>();
-        if (audioSource == null) audioSource = GetComponent<AudioSource>();
-
         // Try to find UI TextMeshPro if not assigned
         if (messageText == null)
         {
             messageText = Object.FindFirstObjectByType<TextMeshProUGUI>();
         }
-
-        UpdateDoorAppearance();
 
         // Hide message text at start
         if (messageText != null)
@@ -79,40 +62,22 @@ public class LevelDoor : MonoBehaviour
         if (isUnlocked) return;
 
         isUnlocked = true;
-        UpdateDoorAppearance();
-
-        // Trigger animation if animator is assigned
-        if (animator != null && !string.IsNullOrEmpty(unlockTrigger))
-        {
-            animator.SetTrigger(unlockTrigger);
-        }
-
-        // Play unlock sound
-        if (audioSource != null && unlockSound != null)
-        {
-            audioSource.PlayOneShot(unlockSound);
-        }
 
        
 
         if (!string.IsNullOrEmpty(nextLevelName))
-        
-            Invoke(nameof(LoadNextLevel), 1.5f); // delay slightly longer for animation/sound
-        
-       
+        {
+            Invoke(nameof(LoadNextLevel), 0f);
+        }
+        else
+        {
+            ShowMessage("Next level name is not set!");
+        }
     }
 
     private void LoadNextLevel()
     {
         SceneManager.LoadScene(nextLevelName);
-    }
-
-    private void UpdateDoorAppearance()
-    {
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = isUnlocked ? unlockedColor : lockedColor;
-        }
     }
 
     private void ShowMessage(string message)

@@ -3,7 +3,7 @@ using UnityEngine;
 public class PickupAndThrow : MonoBehaviour
 {
     [Header("Pickup Settings")]
-    [SerializeField] private float pickupRange = 1.5f;
+    private float pickupRange = 1.75f;
     [SerializeField] private float throwForce = 15f;
     [SerializeField] private LayerMask pickupLayerMask = -1; // What layers can be picked up
 
@@ -34,7 +34,6 @@ public class PickupAndThrow : MonoBehaviour
             else Drop();
         }
         if (Input.GetKeyDown(KeyCode.E) && currentBox != null) Throw();
-
         UpdateHeldObjectPosition();
     }
 
@@ -49,7 +48,12 @@ public class PickupAndThrow : MonoBehaviour
 
     private void TryPickup()
     {
-        Collider2D[] items = Physics2D.OverlapCircleAll(transform.position, pickupRange, pickupLayerMask);
+        // Create box in front of and below the player
+        Vector2 boxSize = new Vector2(pickupRange, pickupRange * 0.8f); // Width x Height
+        float xOffset = transform.localScale.x > 0 ? pickupRange * 0.5f : -pickupRange * 0.5f; // Forward direction
+        Vector2 boxCenter = (Vector2)transform.position + new Vector2(xOffset, -0.3f); // Forward and slightly down
+
+        Collider2D[] items = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0f, pickupLayerMask);
         foreach (var item in items)
         {
             if (item.CompareTag("PickupableBox") || item.CompareTag("Treasure"))
@@ -69,6 +73,8 @@ public class PickupAndThrow : MonoBehaviour
         if (currentBoxRb != null)
         {
             currentBoxRb.bodyType = RigidbodyType2D.Dynamic;
+            // Clear any accumulated forces
+            currentBoxRb.angularVelocity = 0f;
             currentBox.GetComponent<Collider2D>().enabled = true;
         }
         ResetCurrentBox();
@@ -77,13 +83,14 @@ public class PickupAndThrow : MonoBehaviour
     private void Throw()
     {
         Vector2 direction = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
-
         if (currentBoxRb != null)
         {
             currentBoxRb.bodyType = RigidbodyType2D.Dynamic;
+            // Clear accumulated forces first
+            currentBoxRb.angularVelocity = 0f;
             currentBox.GetComponent<Collider2D>().enabled = true;
 
-            // Apply throw force
+            // Apply clean throw force
             Vector2 throwVector = direction * throwForce + Vector2.up * 5f;
             currentBoxRb.AddForce(throwVector, ForceMode2D.Impulse);
         }
@@ -105,7 +112,4 @@ public class PickupAndThrow : MonoBehaviour
     }
 
     public bool IsHoldingBox => currentBox != null && currentBox.CompareTag("Treasure");
-
-    
-    
 }

@@ -18,7 +18,7 @@ public class MovingPlatform : MonoBehaviour
     void Start()
     {
         startPos = transform.position;
-        Vector3 moveDir = (direction == MoveDirection.Horizontal) ? Vector3.right : Vector3.up;
+        Vector3 moveDir = (direction == MoveDirection.Horizontal) ? Vector3.right : Vector3.down;
         endPos = startPos + moveDir * moveDistance;
     }
 
